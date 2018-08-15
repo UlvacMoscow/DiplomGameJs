@@ -175,15 +175,15 @@ class LevelParser {
     		return type;
     }
 
-    createGrid(field)  {
-        return field.map(element => {
+    createGrid(field = [])  {
+        /*return field.map(element => {
       		  let grid = [];
       		  for(let x = 0; x < element.length; x++) {
       		      grid.push(this.obstacleFromSymbol(element[x]));
   		  }
   		  return grid;
-  		}) /* https://repl.it/@Ulvac/diplomtest по ссылке сравниваю два варианта.*/
-      /*return field.map(elementY => elementY.split('').map(elementX => obstacleFromSymbol(elementX)));*/
+  		})/* https://repl.it/@Ulvac/diplomtest по ссылке сравниваю два варианта.*/
+      return field.map(elementY => elementY.split('').map(elementX => this.obstacleFromSymbol(elementX)));
     }
 
     createActors(movieField = [])  {
