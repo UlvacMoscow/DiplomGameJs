@@ -22,7 +22,7 @@ class Vector {
 
 class Actor {
     constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
-        if ((!(pos instanceof Vector) || !(size instanceof Vector) || !(speed instanceof Vector)))  {
+        if (!(pos instanceof Vector) || !(size instanceof Vector) || !(speed instanceof Vector))  {
             throw new Error('Передаваемые парметры должны быть типа Vector')
         }
 
@@ -54,17 +54,17 @@ class Actor {
     }
 
     isIntersect(someActor) {
-        if (!someActor || !(someActor instanceof Actor)) {
+        if (!(someActor instanceof Actor)) {
             throw new Error('Можно передать только объект типа Vector');
         }
 
         if (this === someActor) {
             return false;
         }
-        return this.left < someActor.right &&
-        this.right > someActor.left &&
-        this.top < someActor.bottom &&
-        this.bottom > someActor.top
+        return this.left < someActor.right
+            && this.right > someActor.left
+            && this.top < someActor.bottom 
+            && this.bottom > someActor.top
     }
 }
 
