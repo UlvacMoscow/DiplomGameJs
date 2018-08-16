@@ -9,7 +9,7 @@ class Vector {
 
     plus(vector) {
         if (!(vector instanceof Vector)) {
-            new Error(`Можно прибавлять к вектору только объект типа Vector`);
+            throw new Error('Можно прибавлять к вектору только объект типа Vector');
         }
         return new Vector(this.x + vector.x, this.y + vector.y);
     }
@@ -23,7 +23,7 @@ class Vector {
 class Actor {
     constructor(pos = new Vector(0, 0), size = new Vector(1, 1), speed = new Vector(0, 0)) {
         if ((!(pos instanceof Vector) || !(size instanceof Vector) || !(speed instanceof Vector)))  {
-            new Error(`Передаваемые парметры должны быть типа Vector`)
+            throw new Error('Передаваемые парметры должны быть типа Vector')
         }
 
         this.pos = pos;
@@ -55,7 +55,7 @@ class Actor {
 
     isIntersect(someActor) {
         if (!someActor || !(someActor instanceof Actor)) {
-            new Error(`Можно передать только объект типа Vector`);
+            throw new Error('Можно передать только объект типа Vector');
         }
 
         if (this === someActor) {
@@ -87,7 +87,7 @@ class Level  {
 
     actorAt(actor)  {
         if (!(actor instanceof Actor))  {
-            new Error('Тип объекта не Actor, или объект не задан');
+            throw new Error('Тип объекта не Actor, или объект не задан');
         }
         return this.actors.find(someActor => actor.isIntersect(someActor));
     }
@@ -95,7 +95,7 @@ class Level  {
 
     obstacleAt(pos, size)  {
         if(!(pos instanceof Vector) || !(size instanceof Vector)) {
-            new Error('Переданные объекты не относяться к типу Vector');
+            throw new Error('Переданные объекты не относяться к типу Vector');
         }
 
         const leftBorder = Math.floor(pos.x);
