@@ -72,12 +72,12 @@ class Actor {
 class Level  {
     constructor (grid = [], actors = []) {
         this.grid = grid;
-    	this.actors = actors;
-    	this.player = actors.find(actor => actor.type === 'player');
-    	this.height = grid.length;
-    	this.width = grid.reduce((previous, current) => Math.max(previous, current.length), 0);
-    	this.status = null;
-    	this.finishDelay = 1;
+        this.actors = actors;
+        this.player = actors.find(actor => actor.type === 'player');
+        this.height = grid.length;
+        this.width = grid.reduce((previous, current) => Math.max(previous, current.length), 0);
+        this.status = null;
+        this.finishDelay = 1;
 
     }
 
@@ -309,5 +309,6 @@ const actorDict = {
 const parser = new LevelParser(actorDict);
 
 loadLevels()
-        .then((res) => {runGame(JSON.parse(res), parser, DOMDisplay)
-        .then(() => alert('Вы выиграли!'))});
+    .then((res) => {runGame(JSON.parse(res), parser, DOMDisplay)
+        .then(() => alert('Вы выиграли!'))
+    });
