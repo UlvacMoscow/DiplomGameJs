@@ -15,7 +15,7 @@ class Vector {
     }
 
     times(time)  {
-      return new Vector(this.x * time, this.y * time);
+        return new Vector(this.x * time, this.y * time);
     }
 }
 
@@ -58,26 +58,30 @@ class Actor {
             throw new Error(`Можно передать только объект типа Vector`);
         }
 
-        if(this === someActor) {
+        if (this === someActor) {
             return false;
         }
         return this.left < someActor.right &&
-          this.right > someActor.left &&
-          this.top < someActor.bottom &&
-          this.bottom > someActor.top
+        this.right > someActor.left &&
+        this.top < someActor.bottom &&
+        this.bottom > someActor.top
     }
 }
 
 
 class Level  {
     constructor (grid = [], actors = []) {
-      this.grid = grid;
-  		this.actors = actors;
-  		this.player = actors.find(actor => actor.type === 'player');
-  		this.height = grid.length;
-  		this.width = grid.reduce((previous, current) => Math.max(previous, current.length), 0);
-  		this.status = null;
-  		this.finishDelay = 1;
+        this.grid = grid;
+    	this.actors = actors;
+    	this.player = actors.find(actor => actor.type === 'player');
+    	this.height = grid.length;
+    	this.width = grid.reduce((previous, current) => Math.max(previous, current.length), 0);
+    	this.status = null;
+    	this.finishDelay = 1;
+
+        if (this.actors === undefined)  {
+            return undefined;
+        }
     }
 
     isFinished()  {
@@ -88,11 +92,6 @@ class Level  {
         if (!(actor instanceof Actor))  {
             throw new Error('Тип объекта не Actor, или объект не задан');
         }
-
-        if (this.actors === undefined)  {
-            return undefined;
-        }
-
         return this.actors.find(someActor => actor.isIntersect(someActor));
     }
 
@@ -101,7 +100,6 @@ class Level  {
         if(!(pos instanceof Vector) || !(size instanceof Vector)) {
             throw new Error('Переданные объекты не относяться к типу Vector');
         }
-
 
         const leftBorder = Math.floor(pos.x);
         const rightBorder = Math.ceil(pos.x + size.x);
@@ -124,7 +122,6 @@ class Level  {
                 }
             }
         }
-
     }
 
     removeActor(actor)  {
@@ -154,7 +151,7 @@ class Level  {
 
 
 class LevelParser {
-    constructor(dictActors = []) {
+    constructor(dictActors = {}) {
         this.itemsField = dictActors;
     }
 
@@ -163,27 +160,20 @@ class LevelParser {
     }
 
     obstacleFromSymbol(item)  {
-    	  let type;
-    		switch (item) {
-    			case 'x':
-    				type = 'wall';
-    				break;
-    			case '!':
-    				type = 'lava';
-    				break;
-    		}
-    		return type;
+        let type;
+        switch (item) {
+            case 'x':
+            	type = 'wall';
+            	break;
+            case '!':
+            	type = 'lava';
+            	break;
+        }
+        return type;
     }
 
     createGrid(field = [])  {
-        /*return field.map(element => {
-      		  let grid = [];
-      		  for(let x = 0; x < element.length; x++) {
-      		      grid.push(this.obstacleFromSymbol(element[x]));
-  		  }
-  		  return grid;
-  		})/* https://repl.it/@Ulvac/diplomtest по ссылке сравниваю два варианта.*/
-      return field.map(elementY => elementY.split('').map(elementX => this.obstacleFromSymbol(elementX)));
+        return field.map(elementY => elementY.split('').map(elementX => this.obstacleFromSymbol(elementX)));
     }
 
     createActors(movieField = [])  {
@@ -193,7 +183,7 @@ class LevelParser {
           [...itemY].forEach((itemX, x) => {
               const Constructor = this.actorFromSymbol(itemX)
               if (typeof Constructor === 'function')  {
-                  let result = new Constructor(new Vector(x, y));
+                  const result = new Constructor(new Vector(x, y));
                   if (result instanceof Actor)  {
                       items.push(result);
                   }
@@ -202,7 +192,6 @@ class LevelParser {
         });
         return items;
     }
-
 
     parse(field) {
         const grid = this.createGrid(field);
@@ -253,6 +242,7 @@ class VerticalFireball extends Fireball {
     }
 }
 
+
 class FireRain extends Fireball {
     constructor(pos) {
         super(pos, new Vector(0, 3));
@@ -297,6 +287,7 @@ class Coin extends Actor {
     }
 }
 
+
 class Player extends Actor  {
     constructor(pos) {
         super(pos, new Vector(0.8, 1.5));
@@ -318,7 +309,6 @@ const actorDict = {
 };
 
 const parser = new LevelParser(actorDict);
-
 
 loadLevels()
       .then((res) => {runGame(JSON.parse(res), parser, DOMDisplay)
