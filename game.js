@@ -79,9 +79,6 @@ class Level  {
     	this.status = null;
     	this.finishDelay = 1;
 
-        if (this.actors === undefined)  {
-            return undefined;
-        }
     }
 
     isFinished()  {
@@ -153,6 +150,11 @@ class Level  {
 class LevelParser {
     constructor(dictActors = {}) {
         this.itemsField = dictActors;
+
+        this.obstacles = {
+            'x' : 'wall',
+            '!' : 'lava'
+        }
     }
 
     actorFromSymbol(item) {
@@ -160,16 +162,7 @@ class LevelParser {
     }
 
     obstacleFromSymbol(item)  {
-        let type;
-        switch (item) {
-            case 'x':
-            	type = 'wall';
-            	break;
-            case '!':
-            	type = 'lava';
-            	break;
-        }
-        return type;
+        return this.obstacles[item];
     }
 
     createGrid(field = [])  {
@@ -180,16 +173,17 @@ class LevelParser {
         const items = [];
 
         movieField.forEach((itemY, y) => {
-          [...itemY].forEach((itemX, x) => {
-              const Constructor = this.actorFromSymbol(itemX)
-              if (typeof Constructor === 'function')  {
-                  const result = new Constructor(new Vector(x, y));
-                  if (result instanceof Actor)  {
-                      items.push(result);
-                  }
-              }
-          });
+            itemY.split('').forEach((itemX, x) => {
+                const Constructor = this.actorFromSymbol(itemX)
+                if (typeof Constructor === 'function')  {
+                    const result = new Constructor(new Vector(x, y));
+                    if (result instanceof Actor)  {
+                        items.push(result);
+                    }
+                }
+            });
         });
+
         return items;
     }
 
